@@ -1,3 +1,2 @@
-# Data-Structure
-Data Structures dersi ödevleri\n
+# Data-Structure Dersi Ödevleri
 Ödevler Hafta Hafta Branchlar'a ayrılmıştır.
