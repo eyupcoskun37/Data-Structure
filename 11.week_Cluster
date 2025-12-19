@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <math.h>
+
+#define N 6   
+#define K 2   
+
+typedef struct {
+    float x;
+    float y;
+    int cluster;
+} Point;
+
+float distance(Point a, Point b) {
+    return sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));
+}
+
+int main() {
+    Point data[N] = {
+        {1, 2, -1},
+        {2, 1, -1},
+        {1, 1, -1},
+        {8, 9, -1},
+        {9, 8, -1},
+        {8, 8, -1}
+    };
+
+    Point center[K];
+    center[0] = data[0];
+    center[1] = data[3];
+
+    for(int i = 0; i < N; i++) {
+        float d0 = distance(data[i], center[0]);
+        float d1 = distance(data[i], center[1]);
+
+        if(d0 < d1)
+            data[i].cluster = 0;
+        else
+            data[i].cluster = 1;
+    }
+
+    for(int k = 0; k < K; k++) {
+        float sumX = 0, sumY = 0;
+        int count = 0;
+
+        for(int i = 0; i < N; i++) {
+            if(data[i].cluster == k) {
+                sumX += data[i].x;
+                sumY += data[i].y;
+                count++;
+            }
+        }
+
+        center[k].x = sumX / count;
+        center[k].y = sumY / count;
+    }
+
+    float centerDistance = distance(center[0], center[1]);
+
+    printf("Cluster Merkezleri:\n");
+    printf("C1: (%.2f , %.2f)\n", center[0].x, center[0].y);
+    printf("C2: (%.2f , %.2f)\n", center[1].x, center[1].y);
+
+    printf("\nMerkezler Arasi Mesafe: %.2f\n", centerDistance);
+
+    if(centerDistance > 5)
+        printf("Clusterlar BAGIMSIZDIR\n");
+    else
+        printf("Clusterlar BAGIMLIDIR\n");
+
+    return 0;
+}
